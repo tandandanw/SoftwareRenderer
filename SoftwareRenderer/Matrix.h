@@ -13,21 +13,21 @@ namespace Tan
 		{
 			struct
 			{
-				coord _11, _12, _13, _14,
+				float _11, _12, _13, _14,
 					  _21, _22, _23, _24,
 					  _31, _32, _33, _34,
 					  _41, _42, _43, _44;
 			};
-			coord m[4][4];
+			float m[4][4];
 		};
 
 	public:
 		Matrix
 		(
-			coord _11 = 0.0f, coord _12 = 0.0f, coord _13 = 0.0f, coord _14 = 0.0f,
-			coord _21 = 0.0f, coord _22 = 0.0f, coord _23 = 0.0f, coord _24 = 0.0f,
-			coord _31 = 0.0f, coord _32 = 0.0f, coord _33 = 0.0f, coord _34 = 0.0f,
-			coord _41 = 0.0f, coord _42 = 0.0f, coord _43 = 0.0f, coord _44 = 0.0f
+			float _11 = 0.0f, float _12 = 0.0f, float _13 = 0.0f, float _14 = 0.0f,
+			float _21 = 0.0f, float _22 = 0.0f, float _23 = 0.0f, float _24 = 0.0f,
+			float _31 = 0.0f, float _32 = 0.0f, float _33 = 0.0f, float _34 = 0.0f,
+			float _41 = 0.0f, float _42 = 0.0f, float _43 = 0.0f, float _44 = 0.0f
 		) : _11(_11), _12(_12), _13(_13), _14(_14),
 			_21(_21), _22(_22), _23(_23), _24(_14),
 			_31(_31), _32(_32), _33(_33), _34(_34),
@@ -117,7 +117,7 @@ namespace Tan
 			{
 				for (int j = i + 1; j < 4; j++)
 				{
-					coord temp = m[i][j];
+					float temp = m[i][j];
 					m[i][j] = m[j][i];
 					m[j][i] = temp;
 				}

@@ -17,90 +17,6 @@ namespace Tan
 			0.0f, 0.0f, 1.0f, 0.0f,
 			0.0f, 0.0f, 0.0f, 1.0f
 		);
-		view = RenderMath::GetViewMatrix
-		(
-			Vector3(0.0f, 0.0f, 0.0f),
-			Vector3(0.0f, 0.0f, 1.0f),
-			Vector3(0.0f, 1.0f, 0.0f)
-		);
-		projection = RenderMath::GetPerspectiveMatrix
-		(
-			static_cast<float>(PI * 0.5f),
-			static_cast<float>(WND_WIDTH / WND_HEIGHT),
-			NEAR,
-			FAR
-		);
-
-		Update();
-	}
-
-	void RenderObject::GenerateBox()
-	{
-		// 8 vertices
-		verticesCount = 8;
-		vertices = new Vertex[8]
-		{
-			{ {0.0f, 0.0f, 0.0f, 1.0f },   Colors::White, 0.0f },
-			{ {0.0f, 0.0f, 6.0f, 1.0f },   Colors::Black, 0.0f },
-			{ {6.0f, 0.0f, 6.0f, 1.0f },     Colors::Red, 0.0f },
-			{ {6.0f, 0.0f, 0.0f, 1.0f },   Colors::Green, 0.0f },
-			{ {0.0f, 6.0f, 0.0f, 1.0f },    Colors::Blue, 0.0f },
-			{ {0.0f, 6.0f, 6.0f, 1.0f },  Colors::Yellow, 0.0f },
-			{ {6.0f, 6.0f, 6.0f, 1.0f },    Colors::Cyan, 0.0f },
-			{ {6.0f, 6.0f, 0.0f, 1.0f }, Colors::Magenta, 0.0f }
-		};
-	
-		// 12 x 3 = 36 indices
-		indicesCount = 36;
-		indices = new UINT[36]
-		{
-			// bottom (counter-clockwise)
-			0, 2, 1,
-			0, 3, 2, 
-
-			// front
-			0, 4, 7,
-			0, 7, 3,
-
-			// left (counter-clockwise)
-			0, 5, 4,
-			0, 1, 5,
-			
-			// back (counter-clockwise)
-			1, 6, 5,
-			1, 2, 6,
-		
-			// right
-			3, 7, 6,
-			3, 6, 2,
-
-			// top
-			4, 5, 6,
-			4, 6, 7
-		};
-
-		world = Matrix
-		(
-			1.0f, 0.0f, 0.0f, 0.0f,
-			0.0f, 1.0f, 0.0f, 0.0f,
-			0.0f, 0.0f, 1.0f, 0.0f,
-			0.0f, 0.0f, 0.0f, 1.0f
-		);
-		view = RenderMath::GetViewMatrix
-		(
-			Vector3(12.0f, 3.0f, -6.0f),
-			Vector3( 6.0f, 3.0f,  0.0f),
-			Vector3( 0.0f, 1.0f,  0.0f)
-		);
-		projection = RenderMath::GetPerspectiveMatrix
-		(
-			static_cast<float>(PI * 0.5f),
-			static_cast<float>(WND_WIDTH / WND_HEIGHT), 
-			1.0f, 
-			500.0f
-		);
-
-		Update();
 	}
 
 	void RenderObject::Delete()
@@ -119,11 +35,77 @@ namespace Tan
 		static float theta = 0.005f;
 		static Matrix rotate = RenderMath::GetRotateMatrix(1.0f, 1.0f, 1.0f, theta);
 		world = RenderMath::MatrixMulMatrix(world, rotate);
-		Update();
 	}
 
-	inline void RenderObject::Update()
+	void RenderObject::GenerateBox()
 	{
-		wvTransform = RenderMath::MatrixMulMatrix(world, view);
+		// 24 vertices
+		verticesCount = 24;
+		vertices = new Vertex[24] // pos, color, uv, normal, light, rhw.
+		{
+/* 0 */		{ {  0.5f, -0.5f,  0.5f, 1.0f },  Colors::White,   { 0.0f, 0.0f },  {  0.0f,  0.0f,  1.0f },  Colors::White,  0.0f },
+			{ { -0.5f, -0.5f,  0.5f, 1.0f },  Colors::Black,   { 1.0f, 0.0f },  {  0.0f,  0.0f,  1.0f },  Colors::White,  0.0f },
+			{ {  0.5f,  0.5f,  0.5f, 1.0f },  Colors::Red,     { 0.0f, 1.0f },  {  0.0f,  0.0f,  1.0f },  Colors::White,  0.0f },
+			{ { -0.5f,  0.5f,  0.5f, 1.0f },  Colors::Green,   { 1.0f, 1.0f },  {  0.0f,  0.0f,  1.0f },  Colors::White,  0.0f },
+
+/* 4 */		{ {  0.5f,  0.5f, -0.5f, 1.0f },  Colors::Blue,    { 0.0f, 1.0f },  {  0.0f,  1.0f,  0.0f },  Colors::White,  0.0f },
+			{ { -0.5f,  0.5f, -0.5f, 1.0f },  Colors::Yellow,  { 1.0f, 1.0f },  {  0.0f,  1.0f,  0.0f },  Colors::White,  0.0f },
+			{ {  0.5f, -0.5f, -0.5f, 1.0f },  Colors::Cyan,    { 0.0f, 1.0f },  {  0.0f,  0.0f, -1.0f },  Colors::White,  0.0f },
+			{ { -0.5f, -0.5f, -0.5f, 1.0f },  Colors::Magenta, { 1.0f, 1.0f },  {  0.0f,  0.0f, -1.0f },  Colors::White,  0.0f },
+ 
+/* 8 */		{ {  0.5f,  0.5f,  0.5f, 1.0f },  Colors::Red,     { 0.0f, 0.0f },	{  0.0f,  1.0f,  0.0f },  Colors::White,  0.0f },
+			{ { -0.5f,  0.5f,  0.5f, 1.0f },  Colors::Green,   { 1.0f, 0.0f },  {  0.0f,  1.0f,  0.0f },  Colors::White,  0.0f },
+			{ {  0.5f,  0.5f, -0.5f, 1.0f },  Colors::Blue,    { 0.0f, 0.0f },  {  0.0f,  0.0f, -1.0f },  Colors::White,  0.0f },
+			{ { -0.5f,  0.5f, -0.5f, 1.0f },  Colors::Yellow,  { 1.0f, 0.0f },  {  0.0f,  0.0f, -1.0f },  Colors::White,  0.0f },
+			
+/* 12 */	{ {  0.5f, -0.5f, -0.5f, 1.0f },  Colors::Cyan,    { 0.0f, 0.0f },  {  0.0f, -1.0f,  0.0f },  Colors::White,  0.0f },
+			{ {  0.5f, -0.5f,  0.5f, 1.0f },  Colors::White,   { 0.0f, 1.0f },  {  0.0f, -1.0f,  0.0f },  Colors::White,  0.0f },
+			{ { -0.5f, -0.5f,  0.5f, 1.0f },  Colors::Black,   { 1.0f, 1.0f },  {  0.0f, -1.0f,  0.0f },  Colors::White,  0.0f },
+			{ { -0.5f, -0.5f, -0.5f, 1.0f },  Colors::Magenta, { 1.0f, 0.0f },  {  0.0f, -1.0f,  0.0f },  Colors::White,  0.0f },
+
+/* 16 */	{ { -0.5f, -0.5f,  0.5f, 1.0f },  Colors::Black,   { 0.0f, 0.0f },  { -1.0f,  0.0f,  0.0f },  Colors::White,  0.0f },
+			{ { -0.5f,  0.5f,  0.5f, 1.0f },  Colors::Green,   { 0.0f, 1.0f },  { -1.0f,  0.0f,  0.0f },  Colors::White,  0.0f },
+			{ { -0.5f,  0.5f, -0.5f, 1.0f },  Colors::Yellow,  { 1.0f, 1.0f },  { -1.0f,  0.0f,  0.0f },  Colors::White,  0.0f },
+			{ { -0.5f, -0.5f, -0.5f, 1.0f },  Colors::Magenta, { 1.0f, 0.0f },  { -1.0f,  0.0f,  0.0f },  Colors::White,  0.0f },
+			
+/* 20 */	{ {  0.5f, -0.5f, -0.5f, 1.0f },  Colors::Cyan,    { 0.0f, 0.0f },  {  1.0f,  0.0f,  0.0f },  Colors::White,  0.0f },
+			{ {  0.5f,  0.5f, -0.5f, 1.0f },  Colors::Blue,    { 0.0f, 1.0f },  {  1.0f,  0.0f,  0.0f },  Colors::White,  0.0f },
+			{ {  0.5f,  0.5f,  0.5f, 1.0f },  Colors::Red,     { 1.0f, 1.0f },  {  1.0f,  0.0f,  0.0f },  Colors::White,  0.0f },
+			{ {  0.5f, -0.5f,  0.5f, 1.0f },  Colors::White,   { 1.0f, 0.0f },  {  1.0f,  0.0f,  0.0f },  Colors::White,  0.0f },
+		};
+
+		// 12 x 3 = 36 indices
+		indicesCount = 36;
+		indices = new UINT[36]
+		{
+			// back (counter-clockwise)
+		    0, 2, 3,
+			0, 3, 1,
+
+			// top
+			8, 4, 5,
+			8, 5, 9,
+
+			// front
+			10, 6, 7,
+			10, 7, 11,
+
+			// bottom (counter-clockwise)
+			12, 13, 14,
+			12, 14, 15,
+
+			// left (counter-clockwise)
+			16, 17, 18,
+			16, 18, 19,
+
+			// right
+			20, 21, 22,
+			20, 22, 23
+		};
+
+		// Scale 4 times.
+		world.m[0][0] *= 3.5f;
+		world.m[1][1] *= 3.5f;
+		world.m[2][2] *= 3.5f;
 	}
 }

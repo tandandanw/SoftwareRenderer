@@ -12,13 +12,13 @@ namespace Tan
 	public:
 		union
 		{
-			struct { coord x, y; };
-			coord v[2];
+			struct { float x, y; };
+			float v[2];
 		};
 
 	public:
 		Vector2() : x(0.0f), y(0.0f) {}
-		Vector2(coord x, coord y) : x(x), y(y) {}
+		Vector2(float x, float y) : x(x), y(y) {}
 		Vector2(const Vector2& rhs) : x(rhs.x), y(rhs.y) {}
 		~Vector2() = default;
 
@@ -92,13 +92,13 @@ namespace Tan
 	public:
 		union
 		{
-			struct { coord x, y, z; };
-			coord v[3];
+			struct { float x, y, z; };
+			float v[3];
 		};
 
 	public:
 		Vector3() : x(0.0f), y(0.0f), z(0.0f) {}
-		Vector3(coord x, coord y, coord z) : x(x), y(y), z(z) {}
+		Vector3(float x, float y, float z) : x(x), y(y), z(z) {}
 		Vector3(const Vector3& rhs) : x(rhs.x), y(rhs.y), z(rhs.z) {}
 		~Vector3() = default;
 
@@ -186,14 +186,14 @@ namespace Tan
 	public:
 		union
 		{
-			struct { coord x, y, z, w; };
-			coord v[4];
+			struct { float x, y, z, w; };
+			float v[4];
 		};
 
 	public:
 		Vector4() : x(0.0f), y(0.0f), z(0.0f), w(0.0f) {}
-		Vector4(coord x, coord y, coord z, coord w = 0.0f) : x(x), y(y), z(z), w(w) {}
-		Vector4(const Vector3& rhs, coord w = 0.0f) : x(rhs.x), y(rhs.y), z(rhs.z), w(w) {}
+		Vector4(float x, float y, float z, float w = 0.0f) : x(x), y(y), z(z), w(w) {}
+		Vector4(const Vector3& rhs, float w = 0.0f) : x(rhs.x), y(rhs.y), z(rhs.z), w(w) {}
 		Vector4(const Vector4& rhs) : x(rhs.x), y(rhs.y), z(rhs.z), w(rhs.w) {}
 		~Vector4() = default;
 

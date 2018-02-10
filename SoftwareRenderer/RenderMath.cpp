@@ -63,8 +63,12 @@ namespace Tan
 		ret.m[0][2] = 2 * x * z - 2 * w * y;
 		ret.m[1][2] = 2 * y * z + 2 * w * x;
 		ret.m[2][2] = 1 - 2 * x * x - 2 * y * y;
-		ret.m[0][3] = ret.m[1][3] = ret.m[2][3] = 0.0f;
-		ret.m[3][0] = ret.m[3][1] = ret.m[3][2] = 0.0f;
+		ret.m[0][3] = 0.0f; 
+		ret.m[1][3] = 0.0f; 
+		ret.m[2][3] = 0.0f;
+		ret.m[3][0] = 0.0f; 
+		ret.m[3][1] = 0.0f; 
+		ret.m[3][2] = 0.0f;
 		ret.m[3][3] = 1.0f;
 		return ret;
 	}
@@ -93,7 +97,9 @@ namespace Tan
 		ret.m[2][2] = zAxis.z;
 		ret.m[3][2] = -zAxis.Dot(eye);
 
-		ret.m[0][3] = ret.m[1][3] = ret.m[2][3] = 0.0f;
+		ret.m[0][3] = 0.0f;
+		ret.m[1][3] = 0.0f;
+		ret.m[2][3] = 0.0f;
 		ret.m[3][3] = 1.0f;
 		return ret;
 	}
@@ -119,17 +125,27 @@ namespace Tan
 		return (R << 16) | (G << 8) | (B);
 	}
 
-	inline float   RenderMath::Lerp(float x1, float x2, float t)
+	inline float RenderMath::Clamp(float value, float min, float max)
+	{
+		if (value < min) 
+			return min;
+		else if (max < value) 
+			return max;
+		else
+			return value;
+	}
+
+	inline float  RenderMath::Lerp(float x1, float x2, float t)
 	{
 		if (t < 0.0f) 
 			return x1;
-		else if (t > 1.0f) 
+		else if (1.0f < t) 
 			return x2;
-		else
+		else 
 			return x1 + (x2 - x1) * t;
 	}
 
-	inline Color   RenderMath::Lerp(const Color& c1, const Color& c2, float t)
+	Color   RenderMath::Lerp(const Color& c1, const Color& c2, float t)
 	{
 		return Color
 		{
@@ -139,7 +155,26 @@ namespace Tan
 		};
 	}
 
-	inline Vector4 RenderMath::Lerp(const Vector4& v1, const Vector4& v2, float t)
+	Vector2 RenderMath::Lerp(const Vector2& v1, const Vector2& v2, float t)
+	{
+		return Vector2
+		{
+			Lerp(v1.x, v2.x, t),
+			Lerp(v1.y, v2.y, t)
+		};
+	}
+
+	Vector3 RenderMath::Lerp(const Vector3& v1, const Vector3& v2, float t)
+	{
+		return Vector3
+		{
+			Lerp(v1.x, v2.x, t),
+			Lerp(v1.y, v2.y, t),
+			Lerp(v1.z, v2.z, t)
+		};
+	}
+
+	Vector4 RenderMath::Lerp(const Vector4& v1, const Vector4& v2, float t)
 	{
 		return Vector4
 		{
@@ -149,13 +184,16 @@ namespace Tan
 		};
 	}
 
-	 Vertex  RenderMath::Lerp(const Vertex& v1, const Vertex& v2, float t)
+	Vertex  RenderMath::Lerp(const Vertex& v1, const Vertex& v2, float t)
 	{
 		return Vertex
 		{
-			Lerp(v1.pos,   v2.pos,   t),
-			Lerp(v1.color, v2.color, t),
-			Lerp(v1.rhw,   v2.rhw,   t)
+			Lerp(v1.pos,    v2.pos,    t),
+			Lerp(v1.color,  v2.color,  t),
+			Lerp(v1.uv,	    v2.uv,     t),
+			Lerp(v1.normal, v2.normal, t),
+			Lerp(v1.light,  v2.light,  t),
+			Lerp(v1.rhw,    v2.rhw,    t)
 		};
 	}
 

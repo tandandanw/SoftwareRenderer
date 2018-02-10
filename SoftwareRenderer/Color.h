@@ -9,13 +9,13 @@ namespace Tan
 	public:
 		union
 		{
-			struct { coord r, g, b; };
-			coord c[3];
+			struct { float r, g, b; };
+			float c[3];
 		};
 
 	public:
 		Color() : r(0.0f), g(0.0f), b(0.0f) {}
-		Color(coord r, coord g, coord b) : r(r), g(g), b(b) {}
+		Color(float r, float g, float b) : r(r), g(g), b(b) {}
 		Color(const Color& rhs) : r(rhs.r), g(rhs.g), b(rhs.b) {}
 		~Color() = default;
 

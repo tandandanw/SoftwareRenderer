@@ -121,6 +121,7 @@
     <ClInclude Include="RenderMath.h" />
     <ClInclude Include="RenderObject.h" />
     <ClInclude Include="RenderType.h" />
+    <ClInclude Include="Scene.h" />
     <ClInclude Include="SoftwareRenderer.h" />
     <ClInclude Include="Vector.h" />
   </ItemGroup>
@@ -128,6 +129,7 @@
     <ClCompile Include="MainEntrace.cpp" />
     <ClCompile Include="RenderMath.cpp" />
     <ClCompile Include="RenderObject.cpp" />
+    <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SoftwareRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>

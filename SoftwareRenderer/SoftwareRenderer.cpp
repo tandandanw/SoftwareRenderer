@@ -11,9 +11,7 @@ namespace Tan
 
 		mFrameBuffer  = nullptr;
 		mZBuffer      = nullptr;
-		mRenderState  = COLOR;
-
-		mRenderObject = nullptr;
+		mScene		  = nullptr;
 	}
 
 	bool SoftwareRenderer::Initialize()
@@ -115,8 +113,9 @@ namespace Tan
 		}
 
 		// Create a render object(it's a box now).
-		mRenderObject = new RenderObject();
-		mRenderObject->GenerateBox();
+		mScene = new Scene;
+		mScene->Initialize();
+		mScene->CreateBox();
 
 		// Show the window.
 		ShowWindow(hWnd, SW_SHOW);
@@ -137,10 +136,13 @@ namespace Tan
 				delete[] mZBuffer[i];
 		mZBuffer = nullptr;
 
-		mRenderObject->Delete();
-		if (mRenderObject)
-			delete mRenderObject;
-
+		if (mScene)
+		{
+			mScene->Delete();
+			delete mScene;
+		}
+		mScene = nullptr;
+			
 		if (mHDC)
 			DeleteDC(mHDC);
 		mHDC = nullptr;
@@ -185,27 +187,28 @@ namespace Tan
 
 	void SoftwareRenderer::Draw()
 	{
-		mRenderObject->Rotate();
-
+		UINT count = mScene->GetIndicesCount();
 		UINT index1, index2, index3;
-		for (int i = 0; i < mRenderObject->indicesCount; i += 3)
+		for (int i = 0; i < count; i += 3)
 		{
-			index1 = mRenderObject->indices[i];
-			index2 = mRenderObject->indices[i + 1];
-			index3 = mRenderObject->indices[i + 2];
+			index1 = mScene->GetIndex(i);
+			index2 = mScene->GetIndex(i + 1);
+			index3 = mScene->GetIndex(i + 2);
 
-			DrawTriangle(mRenderObject->vertices[index1], mRenderObject->vertices[index2], mRenderObject->vertices[index3]);
+			DrawTriangle(mScene->GetVertex(index1), mScene->GetVertex(index2), mScene->GetVertex(index3));
 		}
 	}
 
 	void SoftwareRenderer::Update()
 	{
+		mScene->Update();
+
 		HDC hdc= GetDC(hWnd);
 		BitBlt(hdc, 0, 0, WND_WIDTH, WND_HEIGHT, mHDC, 0, 0, SRCCOPY);
 		ReleaseDC(hWnd, hdc);
 	}
 
-	inline void SoftwareRenderer::Clear()
+	void SoftwareRenderer::Clear()
 	{
 		for (int y = 0; y < WND_HEIGHT; ++y)
 			for (int x = 0; x < WND_WIDTH; ++x)
@@ -215,10 +218,15 @@ namespace Tan
 			for (int x = 0; x < WND_WIDTH; ++x)
 				mZBuffer[y][x] = BACKGROUNDCOLOR;
 	}
-
-	inline bool SoftwareRenderer::BackfaceCulling(const Vertex& v1, const Vertex& v2, const Vertex& v3)
+	
+	void SoftwareRenderer::Lighting(Vertex& vertex)
 	{
-		if (mRenderState & WIREFRAME)
+
+	}
+
+	bool SoftwareRenderer::BackfaceCulling(const Vertex& v1, const Vertex& v2, const Vertex& v3)
+	{
+		if (mScene->renderState & WIREFRAME)
 		{
 			return false;
 		}
@@ -234,7 +242,7 @@ namespace Tan
 		}
 	}
 
-	inline bool SoftwareRenderer::Clipping(const Vertex& vertex)
+	bool SoftwareRenderer::Clipping(const Vertex& vertex)
 	{
 		float w = vertex.pos.w;
 		if (vertex.pos.z < 0.0f || vertex.pos.z > w) return true;
@@ -243,7 +251,7 @@ namespace Tan
 		return false;
 	}
 
-	inline void SoftwareRenderer::Homogenize(Vertex& vertex)
+	void SoftwareRenderer::Homogenize(Vertex& vertex)
 	{
 		float rhw = 1.0f / vertex.pos.w;
 		vertex.rhw = rhw; // "reciprocally homogeneous w" = 1 / z.
@@ -260,9 +268,16 @@ namespace Tan
 		Vertex vert[3]{ v1, v2, v3 };
 
 		/*--Geometry stage--*/
-		// To the view space.
-		for (auto &v : vert) 
-			v.pos = RenderMath::Vector4MulMatrix(v.pos, mRenderObject->wvTransform);
+
+		for (auto &v : vert)
+		{
+			// To the world space.
+			v.pos = RenderMath::Vector4MulMatrix(v.pos, mScene->GetWorldMatrix());
+			// Lighting in the world space.
+			Lighting(v);
+			// To the view space.
+			v.pos = RenderMath::Vector4MulMatrix(v.pos, mScene->view);
+		}
 		
 		// Backface culling in the view space.
 		if (BackfaceCulling(vert[0], vert[1], vert[2])) return;
@@ -270,21 +285,21 @@ namespace Tan
 		for (auto &v : vert)
 		{
 			// To the homogeneous clip space.
-			v.pos = RenderMath::Vector4MulMatrix(v.pos, mRenderObject->projection);
-			// Clipping.
+			v.pos = RenderMath::Vector4MulMatrix(v.pos, mScene->projection);
+			// Clipping in the canonical view volume.
 			if (Clipping(v)) return;
 			// Perspective dividing and mapping to the screen space.
 			Homogenize(v);
 		}
 
 		/*--Rasterization stage--*/
-		if (mRenderState & WIREFRAME) 
+		if (mScene->renderState & WIREFRAME)
 		{
 			DrawLine(vert[0].pos.x, vert[0].pos.y, vert[1].pos.x, vert[1].pos.y);
 			DrawLine(vert[1].pos.x, vert[1].pos.y, vert[2].pos.x, vert[2].pos.y);
 			DrawLine(vert[2].pos.x, vert[2].pos.y, vert[0].pos.x, vert[0].pos.y);
 		}
-		else // if(mRenderState & COLOR || mRenderState & TEXTURE)
+		else // if(COLOR || TEXTURE)
 		{
 			FillTriangle(vert[0], vert[1], vert[2]);
 		}
@@ -368,7 +383,9 @@ namespace Tan
 			FillBottomTriangle(mid, *middle, *top);
 			FillTopTriangle(mid, *middle, *bottom);
 
-			top = bottom = middle = nullptr;
+			top = nullptr;
+			bottom = nullptr;
+			middle = nullptr;
 		}
 	}
 
@@ -464,7 +481,7 @@ namespace Tan
 		}
 	}
 
-	void SoftwareRenderer::DrawLine(coord x1, coord y1, coord x2, coord y2)
+	void SoftwareRenderer::DrawLine(float x1, float y1, float x2, float y2)
 	{
 		// The bresenham / midway line-drawing algorithm.
 		int dx = static_cast<int>(x2 - x1);
@@ -526,7 +543,7 @@ namespace Tan
 		}
 	}
 
-	inline void SoftwareRenderer::DrawPixel(coord x, coord y, UINT color)
+	inline void SoftwareRenderer::DrawPixel(float x, float y, UINT color)
 	{
 		if (x > 0 && x < WND_WIDTH && y > 0 && y < WND_HEIGHT)
 			mFrameBuffer[ static_cast<int>(y) ][ static_cast<int>(x) ] = color;

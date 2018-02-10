@@ -51,6 +51,9 @@
     <ClInclude Include="RenderType.h">
       <Filter>Header Files\Render</Filter>
     </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>Header Files\Render</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MainEntrace.cpp">
@@ -64,6 +67,9 @@
     </ClCompile>
     <ClCompile Include="RenderMath.cpp">
       <Filter>Source Files\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>Source Files\Render</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
