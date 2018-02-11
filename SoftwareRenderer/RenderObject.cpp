@@ -17,6 +17,8 @@ namespace Tan
 			0.0f, 0.0f, 1.0f, 0.0f,
 			0.0f, 0.0f, 0.0f, 1.0f
 		);
+
+		map = new Material;
 	}
 
 	void RenderObject::Delete()
@@ -28,11 +30,15 @@ namespace Tan
 		if (indices)
 			delete indices;
 		indices = nullptr;
+
+		if (map)
+			delete map;
+		map = nullptr;
 	}
 
 	void RenderObject::Rotate()
 	{
-		static float theta = 0.005f;
+		static float theta = 0.01f;
 		static Matrix rotate = RenderMath::GetRotateMatrix(1.0f, 1.0f, 1.0f, theta);
 		world = RenderMath::MatrixMulMatrix(world, rotate);
 	}
@@ -104,8 +110,8 @@ namespace Tan
 		};
 
 		// Scale 4 times.
-		world.m[0][0] *= 3.5f;
-		world.m[1][1] *= 3.5f;
-		world.m[2][2] *= 3.5f;
+		world.m[0][0] *= 3.0f;
+		world.m[1][1] *= 3.0f;
+		world.m[2][2] *= 3.0f;
 	}
 }

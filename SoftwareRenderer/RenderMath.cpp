@@ -2,6 +2,16 @@
 
 namespace Tan
 {
+	Vector3 RenderMath::Vector3MulMatrix(const Vector3& vector, const Matrix& matrix)
+	{
+		Vector3 ret;
+		for (int i = 0; i < 3; i++)
+			for (int j = 0; j < 3; j++)
+				ret.v[i] += (vector.v[j] * matrix.m[j][i]);
+		return ret;
+	}
+
+
 	Vector4 RenderMath::Vector4MulMatrix(const Vector4& vector, const Matrix& matrix)
 	{
 		Vector4 ret;
@@ -117,34 +127,6 @@ namespace Tan
 		return ret;
 	}
 
-	UINT    RenderMath::ColorToUINT(float r, float g, float b)
-	{
-		int R = static_cast<int>(r * 255.0f);
-		int G = static_cast<int>(g * 255.0f);
-		int B = static_cast<int>(b * 255.0f);
-		return (R << 16) | (G << 8) | (B);
-	}
-
-	inline float RenderMath::Clamp(float value, float min, float max)
-	{
-		if (value < min) 
-			return min;
-		else if (max < value) 
-			return max;
-		else
-			return value;
-	}
-
-	inline float  RenderMath::Lerp(float x1, float x2, float t)
-	{
-		if (t < 0.0f) 
-			return x1;
-		else if (1.0f < t) 
-			return x2;
-		else 
-			return x1 + (x2 - x1) * t;
-	}
-
 	Color   RenderMath::Lerp(const Color& c1, const Color& c2, float t)
 	{
 		return Color
@@ -188,13 +170,20 @@ namespace Tan
 	{
 		return Vertex
 		{
-			Lerp(v1.pos,    v2.pos,    t),
-			Lerp(v1.color,  v2.color,  t),
-			Lerp(v1.uv,	    v2.uv,     t),
-			Lerp(v1.normal, v2.normal, t),
-			Lerp(v1.light,  v2.light,  t),
-			Lerp(v1.rhw,    v2.rhw,    t)
+			Lerp(v1.pos,	   v2.pos,       t),
+			Lerp(v1.color,     v2.color,     t),
+			Lerp(v1.uv,	       v2.uv,        t),
+			Lerp(v1.normal,    v2.normal,    t),
+			Lerp(v1.litColor,  v2.litColor,  t),
+			Lerp(v1.rhw,       v2.rhw,       t)
 		};
 	}
-
+	
+	UINT    RenderMath::ColorToUINT(float r, float g, float b)
+	{
+		int R = static_cast<int>(r * 255.0f);
+		int G = static_cast<int>(g * 255.0f);
+		int B = static_cast<int>(b * 255.0f);
+		return (R << 16) | (G << 8) | (B);
+	}
 }

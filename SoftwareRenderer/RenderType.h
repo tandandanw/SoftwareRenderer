@@ -21,14 +21,14 @@ namespace Tan
 		Vector2 uv;
 		Vector3 normal;
 
-		Color   light;  // lighting color.
+		Color   litColor;  // lighting color.
 		float   rhw;    // 1 / z.
 
 	public:
 		Vertex() = default;
-		Vertex(const Vector4& pos, const Color& color, const Vector2 uv, const Vector3& normal, const Color& light, float rhw = 0.0f) :
-			pos(pos), color(color), uv(uv), normal(normal), light(light), rhw(rhw) {}
-		Vertex(const Vertex& rhs) : pos(rhs.pos), color(rhs.color), uv(rhs.uv), normal(rhs.normal), light(rhs.light), rhw(rhs.rhw) {}
+		Vertex(const Vector4& pos, const Color& color, const Vector2 uv, const Vector3& normal, const Color& litColor, float rhw = 0.0f) :
+			pos(pos), color(color), uv(uv), normal(normal), litColor(litColor), rhw(rhw) {}
+		Vertex(const Vertex& rhs) : pos(rhs.pos), color(rhs.color), uv(rhs.uv), normal(rhs.normal), litColor(rhs.litColor), rhw(rhs.rhw) {}
 		~Vertex() = default;
 	};
 
@@ -53,27 +53,28 @@ namespace Tan
 	public:
 		Vector3 pos      = { LIGHT_POS  };
 
-		float   ambient  = { LIGHT_AMB  };
-		float   diffuse  = { LIGHT_DIF  };
-		float   specular = { LIGHT_SPEC };
-
+		Color   Kamb     = {LIGHT_AMB};
+		Color   Kdif     = { LIGHT_DIF };
+		Color   Kspec    = { LIGHT_SPEC };
+	
 	public:
 		Light() = default;
-		Light(const Light& rhs) :pos(rhs.pos), ambient(rhs.ambient), diffuse(rhs.diffuse), specular(rhs.specular) {}
+		Light(const Light& rhs) :pos(rhs.pos), Kamb(rhs.Kamb), Kdif(rhs.Kdif), Kspec(rhs.Kspec) {}
 		~Light() = default;
 	};
 
 	class Material
 	{
 	public:
-		float ambient =   { DEFULT_AMB   };
-		float diffuse =   { DEFULT_DIF   };
-		float specular =  { DEFULT_SPEC  };
-		float shininess = { DEFULT_SHINE };
+		Color   Mamb      = { DEFULT_AMB };
+		Color   Mdif      = { DEFULT_DIF };
+		Color   Mspec     = { DEFULT_SPEC };
+
+		float   shininess = { DEFULT_SHINE };
 
 	public :
 		Material() = default;
-		Material(const Material& rhs) : ambient(rhs.ambient), diffuse(rhs.diffuse), specular(rhs.specular), shininess(rhs.shininess) {}
+		Material(const Material& rhs) : Mamb(rhs.Mamb), Mdif(rhs.Mdif), Mspec(rhs.Mspec), shininess(rhs.shininess) {}
 		~Material() = default;
 	};
 }

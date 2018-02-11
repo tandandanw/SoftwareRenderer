@@ -187,7 +187,7 @@ namespace Tan
 
 	void SoftwareRenderer::Draw()
 	{
-		UINT count = mScene->GetIndicesCount();
+		int count = mScene->GetIndicesCount();
 		UINT index1, index2, index3;
 		for (int i = 0; i < count; i += 3)
 		{
@@ -221,7 +221,30 @@ namespace Tan
 	
 	void SoftwareRenderer::Lighting(Vertex& vertex)
 	{
+		Matrix world = mScene->GetWorldMatrix();// world -> transpose then inverse.
+		vertex.normal = RenderMath::Vector3MulMatrix(vertex.normal, world);
 
+		// Cfinal = Kambi * Mamb * Iamb + Kdif * Mdif * Idif + Kspec * Mspec * Ispec.
+		Color finalColor;
+		
+		float Iamb = ENVIRONMENT_AMB;
+		finalColor = (mScene->GetLightAmbient() * mScene->GetMatAmbient() * Iamb);
+
+		Vector3 N = vertex.normal;
+		Vector3 L = mScene->GetLightPos() - vertex.pos.ToVector3();
+		float Idif = RenderMath::Clamp(N.Dot(L), 0.0f, 1.0f);
+		finalColor += (mScene->GetLightDiffuse() * mScene->GetMatDiffuse() * Idif);
+
+		Vector3 V = mScene->GetCameraPos() - vertex.pos.ToVector3();
+		Vector3 H;
+		if (N.Dot(L) > 0) 
+			H = (L + V).Normalize();
+		float Ispec = pow(N.Dot(H), mScene->GetMatShininess());
+		finalColor += (mScene->GetLightSpecular() * mScene->GetMatSpecular() * Ispec);
+
+		if (finalColor.r < 0 || finalColor.g < 0 || finalColor.b < 0)
+			vertex.litColor = Color(1.0f, 1.0f, 1.0f);
+		else vertex.litColor = finalColor;
 	}
 
 	bool SoftwareRenderer::BackfaceCulling(const Vertex& v1, const Vertex& v2, const Vertex& v3)
@@ -261,6 +284,8 @@ namespace Tan
 		vertex.pos.w = 1.0f;
 
 		vertex.color *= rhw;
+		vertex.uv *= rhw;
+		vertex.litColor *= rhw;
 	}
 
 	void SoftwareRenderer::DrawTriangle(const Vertex& v1, const Vertex& v2, const Vertex& v3)
@@ -276,7 +301,7 @@ namespace Tan
 			// Lighting in the world space.
 			Lighting(v);
 			// To the view space.
-			v.pos = RenderMath::Vector4MulMatrix(v.pos, mScene->view);
+ 			v.pos = RenderMath::Vector4MulMatrix(v.pos, mScene->view);
 		}
 		
 		// Backface culling in the view space.
@@ -435,7 +460,7 @@ namespace Tan
 				float dy = y - v3.pos.y;
 				float t = dy / (v2.pos.y - v3.pos.y);
 
-				Vertex vl = RenderMath::Lerp(v3, v1, t);
+				Vertex vl = RenderMath::Lerp(v3, v1,t);
 				vl.pos.x = xl;
 				vl.pos.y = y;
 
@@ -475,7 +500,9 @@ namespace Tan
 
 					float w = 1.0f / reciprocalZ;
 					Color color = RenderMath::Lerp(vl.color, vr.color, lerpFactor) * w;
-					mFrameBuffer[yRound][xRound] = color.ToUINT();
+					Color lit = RenderMath::Lerp(vl.litColor, vr.litColor, lerpFactor) * w;
+					//mFrameBuffer[yRound][xRound] = color.ToUINT();
+					mFrameBuffer[yRound][xRound] = (color * lit).ToUINT();
 				}
 			}
 		}

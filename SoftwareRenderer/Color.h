@@ -20,7 +20,22 @@ namespace Tan
 		~Color() = default;
 
 	public:
-		Color operator* (float k)
+		Color operator+  (const Color& rhs) const 
+		{
+			return Color
+			(
+				r + rhs.r,
+				g + rhs.b,
+				b + rhs.g
+			);
+		}
+		void  operator+= (const Color& rhs)
+		{
+			r += rhs.r;
+			g += rhs.b;
+			b += rhs.g;
+		}
+		Color operator*  (float k) const 
 		{
 			return Color
 			(
@@ -29,11 +44,26 @@ namespace Tan
 				b * k
 			);
 		}
-		void operator*= (float k)
+		Color operator*  (const Color& rhs) const
+		{
+			return Color
+			(
+				r * rhs.r,
+				g * rhs.g,
+				b * rhs.b
+			);
+		}
+		void  operator*= (float k)
 		{
 			r *= k;
 			g *= k;
 			b *= k;
+		}
+		void  operator*= (const Color& rhs)
+		{
+			r *= rhs.r;
+			g *= rhs.g;
+			b *= rhs.b;
 		}
 
 	public:

@@ -23,65 +23,67 @@ namespace Tan
 		~Vector2() = default;
 
 	public:
-		Vector2 operator+  (const Vector2& rhs) const
+		Vector2  operator+  (const Vector2& rhs) const
 		{
 			return Vector2(x + rhs.x, y + rhs.y);
 		}
-		Vector2 operator-  (const Vector2& rhs) const
+		Vector2  operator-  (const Vector2& rhs) const
 		{
 			return Vector2(x - rhs.x, y - rhs.y);
 		}
-		Vector2 operator*  (float k) const
+		Vector2  operator*  (float k) const
 		{
 			return Vector2(k * x, k * y);
 		}
-		void	operator+= (const Vector2& rhs)
+		void	 operator+= (const Vector2& rhs)
 		{
 			x += rhs.x;
 			y += rhs.y;
 		}
-		void	operator-= (const Vector2& rhs)
+		void	 operator-= (const Vector2& rhs)
 		{
 			x -= rhs.x;
 			y -= rhs.y;
 		}
-		void	operator*= (float k)
+		void	 operator*= (float k)
 		{
 			x *= k;
 			y *= k;
 		}
-		void	operator=  (const Vector2& rhs)
+		void	 operator=  (const Vector2& rhs)
 		{
 			if (this == &rhs) return;
 			x = rhs.x;
 			y = rhs.y;
 		}
-		bool	operator== (const Vector2& rhs)
+		bool	 operator== (const Vector2& rhs)
 		{
 			return (abs(x - rhs.x) < FLT_MIN) && (abs(y - rhs.y) < FLT_MIN);
 		}
 
 	public:
-		float   Length() const
+		float    Length() const
 		{
 			return sqrt(x * x + y * y);
 		}
-		float   LengthSquared() const
+		float    LengthSquared() const
 		{
 			return x * x + y * y;
 		}
-		float   Dot(const Vector2& rhs)
+		float    Dot(const Vector2& rhs)
 		{
 			return x * rhs.x + y * rhs.y;
 		}
-		void    Normalize()
+		Vector2& Normalize()
 		{
-			if (LengthSquared() - 0.0f < FLT_MIN) return;
+			if (LengthSquared() - 0.0f < FLT_MIN) 
+				return *this;
 			float rec = 1.0f / Length();
 			x *= rec;
 			y *= rec;
+			return *this;
 		}
-		void    SetZero()
+		void     SetZero()
 		{
 			x = y = 0.0f;
 		}
@@ -103,62 +105,62 @@ namespace Tan
 		~Vector3() = default;
 
 	public:
-		Vector3 operator+  (const Vector3& rhs) const
+		Vector3  operator+  (const Vector3& rhs) const
 		{
 			return Vector3(x + rhs.x, y + rhs.y, z + rhs.z);
 		}
-		Vector3 operator-  (const Vector3& rhs) const
+		Vector3  operator-  (const Vector3& rhs) const
 		{
 			return Vector3(x - rhs.x, y - rhs.y, z - rhs.z);
 		}
-		Vector3 operator*  (float k) const
+		Vector3  operator*  (float k) const
 		{
 			return Vector3(k * x, k * y, k * z);
 		}
-		void	operator+= (const Vector3& rhs)
+		void	 operator+= (const Vector3& rhs)
 		{
 			x += rhs.x;
 			y += rhs.y;
 			z += rhs.z;
 		}
-		void	operator-= (const Vector3& rhs)
+		void	 operator-= (const Vector3& rhs)
 		{
 			x -= rhs.x;
 			y -= rhs.y;
 			z -= rhs.z;
 		}
-		void	operator*= (float k)
+		void	 operator*= (float k)
 		{
 			x *= k;
 			y *= k;
 			z *= k;
 		}
-		void	operator=  (const Vector3& rhs)
+		void	 operator=  (const Vector3& rhs)
 		{
 			if (this == &rhs) return;
 			x = rhs.x;
 			y = rhs.y;
 			z = rhs.z;
 		}
-		bool	operator== (const Vector3& rhs)
+		bool	 operator== (const Vector3& rhs)
 		{
 			return ((abs(x - rhs.x) < FLT_MIN) && (abs(y - rhs.y) < FLT_MIN) && (abs(z - rhs.z) < FLT_MIN));
 		}
 
 	public:
-		float   Length() const
+		float    Length() const
 		{
 			return sqrt(x * x + y * y + z * z);
 		}
-		float   LengthSquared() const
+		float    LengthSquared() const
 		{
 			return x * x + y * y + z * z;
 		}
-		float   Dot(const Vector3& rhs) const
+		float    Dot(const Vector3& rhs) const
 		{
 			return x * rhs.x + y * rhs.y + z * rhs.z;
 		}
-		Vector3 Cross(const Vector3& rhs) const
+		Vector3  Cross(const Vector3& rhs) const
 		{
 			return Vector3
 			(
@@ -167,15 +169,17 @@ namespace Tan
 				x * rhs.y - y * rhs.x
 			);
 		}
-		void	Normalize()
+		Vector3& Normalize()
 		{
-			if (LengthSquared() - 0.0f < FLT_MIN) return;
+			if (LengthSquared() - 0.0f < FLT_MIN) 
+				return *this;
 			float rec = 1.0f / Length();
 			x *= rec;
 			y *= rec;
 			z *= rec;
+			return *this;
 		}
-		void	SetZero()
+		void	 SetZero()
 		{
 			x = y = z = 0.0f;
 		}
@@ -198,37 +202,37 @@ namespace Tan
 		~Vector4() = default;
 
 	public:
-		Vector4 operator+  (const Vector4& rhs) const
+		Vector4  operator+  (const Vector4& rhs) const
 		{
 			return Vector4(x + rhs.x, y + rhs.y, z + rhs.z, w);
 		}
-		Vector4 operator-  (const Vector4& rhs) const
+		Vector4  operator-  (const Vector4& rhs) const
 		{
 			return Vector4(x - rhs.x, y - rhs.y, z - rhs.z, w);
 		}
-		Vector4 operator*  (float k) const
+		Vector4  operator*  (float k) const
 		{
 			return Vector4(k * x, k * y, k * z, w);
 		}
-		void    operator+= (const Vector4& rhs)
+		void     operator+= (const Vector4& rhs)
 		{
 			x += rhs.x;
 			y += rhs.y;
 			z += rhs.z;
 		}
-		void    operator-= (const Vector4& rhs)
+		void     operator-= (const Vector4& rhs)
 		{
 			x -= rhs.x;
 			y -= rhs.y;
 			z -= rhs.z;
 		}
-		void    operator*= (float k)
+		void     operator*= (float k)
 		{
 			x *= k;
 			y *= k;
 			z *= k;
 		}
-		void    operator=  (const Vector4& rhs)
+		void     operator=  (const Vector4& rhs)
 		{
 			if (this == &rhs) return;
 			x = rhs.x;
@@ -236,40 +240,40 @@ namespace Tan
 			z = rhs.z;
 			w = rhs.w;
 		}
-		bool    operator== (const Vector4& rhs)
+		bool     operator== (const Vector4& rhs)
 		{
 			return (abs(x - rhs.x) < FLT_MIN) && (abs(y - rhs.y) < FLT_MIN)
 				&& (abs(z - rhs.z) < FLT_MIN) && (abs(w - rhs.w) < FLT_MIN);
 		}
 
 	public:
-		float   Length() const
+		float    Length() const
 		{
 			return sqrt(x * x + y * y + z * z);
 		}
-		float   LengthSquared() const
+		float    LengthSquared() const
 		{
 			return x * x + y * y + z * z;
 		}
-
-		void    Normalize()
+		Vector4& Normalize()
 		{
-			if (LengthSquared() - 0.0f < FLT_MIN) return;
+			if (LengthSquared() - 0.0f < FLT_MIN) 
+				return *this;
 			float rec = 1.0f / Length();
 			x *= rec;
 			y *= rec;
 			z *= rec;
+			return *this;
 		}
-		void    SetZero()
+		void     SetZero()
 		{
 			x = y = z = w = 0.0f;
 		}
-
-		float   Dot(const Vector4& rhs) const
+		float    Dot(const Vector4& rhs) const
 		{
 			return x * rhs.x + y * rhs.y + z * rhs.z + w * rhs.w;
 		}
-		Vector4 Cross(const Vector4& rhs) const
+		Vector4  Cross(const Vector4& rhs) const
 		{
 			return Vector4
 			(
@@ -279,8 +283,7 @@ namespace Tan
 				w
 			);
 		}
-
-		Vector3 ToVector3() const
+		Vector3  ToVector3() const
 		{
 			return Vector3(x, y, z);
 		}

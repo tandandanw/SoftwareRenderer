@@ -12,7 +12,7 @@ namespace Tan
 	void Scene::Initialize()
 	{
 		renderObject = new RenderObject;
-		renderState = TEXTURE;
+		renderState = RENDER_MODE;
 
 		// can be initialized.
 		lightSource = new Light;

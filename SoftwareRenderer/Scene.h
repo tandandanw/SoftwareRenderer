@@ -41,13 +41,47 @@ namespace Tan
 		{
 			return renderObject->vertices[i];
 		}
+		Matrix  GetWorldMatrix() const // can be GetWorldMatrix(INDEX objectIndex)
+		{
+			return renderObject->world;
+		}
+
 		Vector3 GetCameraPos() const
 		{
 			return camera->pos;
 		}
-		Matrix  GetWorldMatrix() const
+		Vector3 GetLightPos() const
 		{
-			return renderObject->world;
+			return lightSource->pos;
+		}
+		Color   GetLightAmbient() const
+		{
+			return lightSource->Kamb;
+		}
+		Color   GetLightDiffuse() const
+		{
+			return lightSource->Kdif;
+		}
+		Color   GetLightSpecular() const
+		{
+			return lightSource->Kspec;
+		}
+
+		Color   GetMatAmbient() const
+		{
+			return renderObject->map->Mamb;
+		}
+		Color   GetMatDiffuse() const
+		{
+			return renderObject->map->Mdif;
+		}
+		Color   GetMatSpecular() const
+		{
+			return renderObject->map->Mspec;
+		}
+		float   GetMatShininess() const
+		{
+			return renderObject->map->shininess;
 		}
 	};
 }

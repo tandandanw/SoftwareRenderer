@@ -13,11 +13,13 @@ namespace Tan
 		UINT     *indices;
 		Vertex   *vertices;
 	
-		Matrix	  world;
+		Matrix	   world;
+		Material  *map;
 
 	public:
 		RenderObject();
-		RenderObject(const RenderObject& rhs) : vertices(rhs.vertices), world(rhs.world) {}
+		RenderObject(const RenderObject& rhs) : verticesCount(rhs.verticesCount), indicesCount(rhs.indicesCount), indices(rhs.indices), vertices(rhs.vertices),
+			world(rhs.world), map(rhs.map) {}
 		~RenderObject() = default;
 
 	public:
