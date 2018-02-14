@@ -11,9 +11,9 @@ namespace Tan
 	class RenderMath
 	{
 	public:
-			RenderMath() = default;
-			RenderMath(const RenderMath& rhs) = delete;
-			~RenderMath() = default;
+		RenderMath() = default;
+		RenderMath(const RenderMath& rhs) = delete;
+		~RenderMath() = default;
 
 	public:
 		static Vector3      Vector3MulMatrix(const Vector3& vector, const Matrix& matrix);
@@ -39,7 +39,7 @@ namespace Tan
 			else
 				return x1 + (x2 - x1) * t;
 		}
-		
+
 		static float        Clamp(float value, float min, float max)
 		{
 			if (value < min)

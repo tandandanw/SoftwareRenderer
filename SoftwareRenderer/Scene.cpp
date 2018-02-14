@@ -6,17 +6,18 @@ namespace Tan
 	{
 		renderObject = nullptr;
 		lightSource  = nullptr;
-		camera		 = nullptr;
+		camera       = nullptr;
 	}
 
 	void Scene::Initialize()
 	{
 		renderObject = new RenderObject;
 		renderState = RENDER_MODE;
+		lightingState = LIGHTING_MODE;
 
 		// can be initialized.
 		lightSource = new Light;
-		camera      = new Camera;
+		camera = new Camera;
 
 		view = RenderMath::GetViewMatrix
 		(

@@ -52,7 +52,8 @@ namespace Tan
 		}
 		void	 operator=  (const Vector2& rhs)
 		{
-			if (this == &rhs) return;
+			if (this == &rhs)
+				return;
 			x = rhs.x;
 			y = rhs.y;
 		}
@@ -76,7 +77,7 @@ namespace Tan
 		}
 		Vector2& Normalize()
 		{
-			if (LengthSquared() - 0.0f < FLT_MIN) 
+			if (LengthSquared() - 0.0f < FLT_MIN)
 				return *this;
 			float rec = 1.0f / Length();
 			x *= rec;
@@ -137,7 +138,8 @@ namespace Tan
 		}
 		void	 operator=  (const Vector3& rhs)
 		{
-			if (this == &rhs) return;
+			if (this == &rhs) 
+				return;
 			x = rhs.x;
 			y = rhs.y;
 			z = rhs.z;
@@ -164,14 +166,14 @@ namespace Tan
 		{
 			return Vector3
 			(
-				y * rhs.z - z * rhs.y, 
-				z * rhs.x - x * rhs.z, 
+				y * rhs.z - z * rhs.y,
+				z * rhs.x - x * rhs.z,
 				x * rhs.y - y * rhs.x
 			);
 		}
 		Vector3& Normalize()
 		{
-			if (LengthSquared() - 0.0f < FLT_MIN) 
+			if (LengthSquared() - 0.0f < FLT_MIN)
 				return *this;
 			float rec = 1.0f / Length();
 			x *= rec;
@@ -234,7 +236,8 @@ namespace Tan
 		}
 		void     operator=  (const Vector4& rhs)
 		{
-			if (this == &rhs) return;
+			if (this == &rhs) 
+				return;
 			x = rhs.x;
 			y = rhs.y;
 			z = rhs.z;
@@ -257,7 +260,7 @@ namespace Tan
 		}
 		Vector4& Normalize()
 		{
-			if (LengthSquared() - 0.0f < FLT_MIN) 
+			if (LengthSquared() - 0.0f < FLT_MIN)
 				return *this;
 			float rec = 1.0f / Length();
 			x *= rec;

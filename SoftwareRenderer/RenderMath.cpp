@@ -73,11 +73,11 @@ namespace Tan
 		ret.m[0][2] = 2 * x * z - 2 * w * y;
 		ret.m[1][2] = 2 * y * z + 2 * w * x;
 		ret.m[2][2] = 1 - 2 * x * x - 2 * y * y;
-		ret.m[0][3] = 0.0f; 
-		ret.m[1][3] = 0.0f; 
+		ret.m[0][3] = 0.0f;
+		ret.m[1][3] = 0.0f;
 		ret.m[2][3] = 0.0f;
-		ret.m[3][0] = 0.0f; 
-		ret.m[3][1] = 0.0f; 
+		ret.m[3][0] = 0.0f;
+		ret.m[3][1] = 0.0f;
 		ret.m[3][2] = 0.0f;
 		ret.m[3][3] = 1.0f;
 		return ret;
@@ -85,10 +85,8 @@ namespace Tan
 
 	Matrix  RenderMath::GetViewMatrix(const Vector3& eye, const Vector3& at, const Vector3& up)
 	{
-		Vector3 zAxis = at - eye;
-		zAxis.Normalize();
-		Vector3 xAxis = up.Cross(zAxis);
-		xAxis.Normalize();
+		Vector3 zAxis = (at - eye).Normalize();
+		Vector3 xAxis = (up.Cross(zAxis)).Normalize();
 		Vector3 yAxis = zAxis.Cross(xAxis);
 
 		Matrix ret;
@@ -118,7 +116,7 @@ namespace Tan
 	{
 		Matrix ret;
 		ret.SetZero();
-		float fax = 1.0f / static_cast<float>(tan(fovy * 0.5f));
+		float fax   = 1.0f / static_cast<float>(tan(fovy * 0.5f));
 		ret.m[0][0] = static_cast<float>(fax / aspect);
 		ret.m[1][1] = static_cast<float>(fax);
 		ret.m[2][2] = zf / (zf - zn);
@@ -178,7 +176,7 @@ namespace Tan
 			Lerp(v1.rhw,       v2.rhw,       t)
 		};
 	}
-	
+
 	UINT    RenderMath::ColorToUINT(float r, float g, float b)
 	{
 		int R = static_cast<int>(r * 255.0f);

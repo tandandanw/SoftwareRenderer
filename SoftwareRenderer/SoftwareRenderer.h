@@ -18,40 +18,40 @@ namespace Tan
 
 	public:
 		bool	      Initialize();
-        void          Shutdown();
+		void          Shutdown();
 		void          Run();
 
 		void          Draw();
 		void	      Update();
 		void		  Clear();
 
-        void	      DrawTriangle(const Vertex& v1, const Vertex& v2, const Vertex& v3);
+		void	      DrawTriangle(const Vertex& v1, const Vertex& v2, const Vertex& v3);
 		void		  Lighting(Vertex& vertex);
 		bool          BackfaceCulling(const Vertex& v1, const Vertex& v2, const Vertex& v3);
-	    bool	      Clipping(const Vertex& vertex);
+		bool	      Clipping(const Vertex& vertex);
 		void	      Homogenize(Vertex& vertex);
-		
+
 		void	      FillTriangle(const Vertex& v1, const Vertex& v2, const Vertex& v3);
 		void	      FillTopTriangle(const Vertex& v1, const Vertex& v2, const Vertex& v3);
 		void          FillBottomTriangle(const Vertex& v1, const Vertex& v2, const Vertex& v3);
 		void          FillScanline(const Vertex& vl, const Vertex& vr, int y);
-		
+
 		void          DrawLine(float x1, float y1, float x2, float y2);
-		
+
 		inline void   DrawPixel(float x, float y, UINT color);
 
 	private:
-		Scene		 *mScene;
+		Scene        *mScene;
 
 		UINT        **mFrameBuffer;
 		float       **mZBuffer;
-	
+
 		HDC           mHDC;
 		HBITMAP       hBitMap;
 		HWND          hWnd;
 		HINSTANCE     hInstance;
 	};
-	
+
 	LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 }
 

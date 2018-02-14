@@ -12,7 +12,7 @@ namespace Tan
 		UINT      indicesCount;
 		UINT     *indices;
 		Vertex   *vertices;
-	
+
 		Matrix	   world;
 		Material  *map;
 

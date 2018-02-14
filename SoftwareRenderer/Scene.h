@@ -8,14 +8,15 @@ namespace Tan
 	class Scene
 	{
 	public:
-		RenderObject *renderObject;
-		RENDER_STATE  renderState;
-		
-		Light		 *lightSource;
-		Camera		 *camera;
+		RenderObject  *renderObject;
+		RENDER_STATE   renderState;
 
-		Matrix		  view;
-		Matrix		  projection;
+		LIGHTING_STATE lightingState;
+		Light		  *lightSource;
+
+		Camera		  *camera;
+		Matrix		   view;
+		Matrix		   projection;
 
 	public:
 		Scene();
@@ -30,8 +31,8 @@ namespace Tan
 		void    CreateBox();
 
 		UINT    GetIndicesCount() const
-		{ 
-			return renderObject->indicesCount; 
+		{
+			return renderObject->indicesCount;
 		};
 		UINT    GetIndex(UINT i) const
 		{

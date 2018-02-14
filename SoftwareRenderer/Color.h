@@ -20,7 +20,7 @@ namespace Tan
 		~Color() = default;
 
 	public:
-		Color operator+  (const Color& rhs) const 
+		Color operator+  (const Color& rhs) const
 		{
 			return Color
 			(
@@ -35,7 +35,7 @@ namespace Tan
 			g += rhs.b;
 			b += rhs.g;
 		}
-		Color operator*  (float k) const 
+		Color operator*  (float k) const
 		{
 			return Color
 			(

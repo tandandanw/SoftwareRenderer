@@ -9,9 +9,15 @@ namespace Tan
 	typedef enum RENDER_STATE
 	{
 		WIREFRAME = 1,
-		COLOR = 2,
-		TEXTURE = 4
+		COLOR     = 2,
+		TEXTURE   = 4
 	} RENDER_STATE;
+
+	typedef enum LIGHTING_STATE
+	{
+		ON,
+		OFF
+	} LIGHTING_STATE;
 
 	class Vertex
 	{
@@ -35,12 +41,12 @@ namespace Tan
 	class Camera
 	{
 	public:
-		Vector3 pos  = { EYE  };
-		Vector3 up   = { UP   };
-		Vector3 at   = { AT   };
+		Vector3 pos  = { EYE };
+		Vector3 up   = { UP };
+		Vector3 at   = { AT };
 
 		float   near = { NEAR };
-		float   far  = { FAR  };
+		float   far  = { FAR };
 
 	public:
 		Camera() = default;
@@ -51,12 +57,12 @@ namespace Tan
 	class Light
 	{
 	public:
-		Vector3 pos      = { LIGHT_POS  };
+		Vector3 pos   = { LIGHT_POS };
 
-		Color   Kamb     = {LIGHT_AMB};
-		Color   Kdif     = { LIGHT_DIF };
-		Color   Kspec    = { LIGHT_SPEC };
-	
+		Color   Kamb  = { LIGHT_AMB };
+		Color   Kdif  = { LIGHT_DIF };
+		Color   Kspec = { LIGHT_SPEC };
+
 	public:
 		Light() = default;
 		Light(const Light& rhs) :pos(rhs.pos), Kamb(rhs.Kamb), Kdif(rhs.Kdif), Kspec(rhs.Kspec) {}
@@ -72,7 +78,7 @@ namespace Tan
 
 		float   shininess = { DEFULT_SHINE };
 
-	public :
+	public:
 		Material() = default;
 		Material(const Material& rhs) : Mamb(rhs.Mamb), Mdif(rhs.Mdif), Mspec(rhs.Mspec), shininess(rhs.shininess) {}
 		~Material() = default;

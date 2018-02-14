@@ -58,12 +58,12 @@ namespace Tan
 			{ { -0.5f,  0.5f, -0.5f, 1.0f },  Colors::Yellow,  { 1.0f, 1.0f },  {  0.0f,  1.0f,  0.0f },  Colors::White,  0.0f },
 			{ {  0.5f, -0.5f, -0.5f, 1.0f },  Colors::Cyan,    { 0.0f, 1.0f },  {  0.0f,  0.0f, -1.0f },  Colors::White,  0.0f },
 			{ { -0.5f, -0.5f, -0.5f, 1.0f },  Colors::Magenta, { 1.0f, 1.0f },  {  0.0f,  0.0f, -1.0f },  Colors::White,  0.0f },
- 
+
 /* 8 */		{ {  0.5f,  0.5f,  0.5f, 1.0f },  Colors::Red,     { 0.0f, 0.0f },	{  0.0f,  1.0f,  0.0f },  Colors::White,  0.0f },
 			{ { -0.5f,  0.5f,  0.5f, 1.0f },  Colors::Green,   { 1.0f, 0.0f },  {  0.0f,  1.0f,  0.0f },  Colors::White,  0.0f },
 			{ {  0.5f,  0.5f, -0.5f, 1.0f },  Colors::Blue,    { 0.0f, 0.0f },  {  0.0f,  0.0f, -1.0f },  Colors::White,  0.0f },
 			{ { -0.5f,  0.5f, -0.5f, 1.0f },  Colors::Yellow,  { 1.0f, 0.0f },  {  0.0f,  0.0f, -1.0f },  Colors::White,  0.0f },
-			
+
 /* 12 */	{ {  0.5f, -0.5f, -0.5f, 1.0f },  Colors::Cyan,    { 0.0f, 0.0f },  {  0.0f, -1.0f,  0.0f },  Colors::White,  0.0f },
 			{ {  0.5f, -0.5f,  0.5f, 1.0f },  Colors::White,   { 0.0f, 1.0f },  {  0.0f, -1.0f,  0.0f },  Colors::White,  0.0f },
 			{ { -0.5f, -0.5f,  0.5f, 1.0f },  Colors::Black,   { 1.0f, 1.0f },  {  0.0f, -1.0f,  0.0f },  Colors::White,  0.0f },
@@ -73,7 +73,7 @@ namespace Tan
 			{ { -0.5f,  0.5f,  0.5f, 1.0f },  Colors::Green,   { 0.0f, 1.0f },  { -1.0f,  0.0f,  0.0f },  Colors::White,  0.0f },
 			{ { -0.5f,  0.5f, -0.5f, 1.0f },  Colors::Yellow,  { 1.0f, 1.0f },  { -1.0f,  0.0f,  0.0f },  Colors::White,  0.0f },
 			{ { -0.5f, -0.5f, -0.5f, 1.0f },  Colors::Magenta, { 1.0f, 0.0f },  { -1.0f,  0.0f,  0.0f },  Colors::White,  0.0f },
-			
+
 /* 20 */	{ {  0.5f, -0.5f, -0.5f, 1.0f },  Colors::Cyan,    { 0.0f, 0.0f },  {  1.0f,  0.0f,  0.0f },  Colors::White,  0.0f },
 			{ {  0.5f,  0.5f, -0.5f, 1.0f },  Colors::Blue,    { 0.0f, 1.0f },  {  1.0f,  0.0f,  0.0f },  Colors::White,  0.0f },
 			{ {  0.5f,  0.5f,  0.5f, 1.0f },  Colors::Red,     { 1.0f, 1.0f },  {  1.0f,  0.0f,  0.0f },  Colors::White,  0.0f },
@@ -85,7 +85,7 @@ namespace Tan
 		indices = new UINT[36]
 		{
 			// back (counter-clockwise)
-		    0, 2, 3,
+			0, 2, 3,
 			0, 3, 1,
 
 			// top

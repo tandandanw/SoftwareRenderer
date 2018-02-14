@@ -4,34 +4,34 @@ namespace Tan
 {
 	SoftwareRenderer::SoftwareRenderer()
 	{
-		hWnd          = nullptr;
-		hInstance     = nullptr;
-		mHDC          = nullptr;
-		hBitMap       = nullptr;
+		hWnd         = nullptr;
+		hInstance    = nullptr;
+		mHDC         = nullptr;
+		hBitMap      = nullptr;
 
-		mFrameBuffer  = nullptr;
-		mZBuffer      = nullptr;
-		mScene		  = nullptr;
+		mFrameBuffer = nullptr;
+		mZBuffer     = nullptr;
+		mScene       = nullptr;
 	}
 
 	bool SoftwareRenderer::Initialize()
 	{
 		hInstance = GetModuleHandle(NULL);
-		
+
 		// Create a windows class for output.
 		WNDCLASSEX wc;
-		wc.style		 = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;
-		wc.lpfnWndProc   = WndProc;
-		wc.cbClsExtra    = 0;
-		wc.cbWndExtra    = 0;
-		wc.hInstance     = hInstance;
-		wc.hIcon         = (HICON)LoadImage(hInstance, "RenderIcon.ico", IMAGE_ICON, 0, 0, LR_DEFAULTSIZE | LR_LOADFROMFILE);
-		wc.hIconSm       = wc.hIcon;
-		wc.hCursor       = LoadCursor(nullptr, IDC_ARROW);
+		wc.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;
+		wc.lpfnWndProc = WndProc;
+		wc.cbClsExtra = 0;
+		wc.cbWndExtra = 0;
+		wc.hInstance = hInstance;
+		wc.hIcon = (HICON)LoadImage(hInstance, "RenderIcon.ico", IMAGE_ICON, 0, 0, LR_DEFAULTSIZE | LR_LOADFROMFILE);
+		wc.hIconSm = wc.hIcon;
+		wc.hCursor = LoadCursor(nullptr, IDC_ARROW);
 		wc.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH);
-		wc.lpszMenuName  = nullptr;
+		wc.lpszMenuName = nullptr;
 		wc.lpszClassName = RNDERER_NAME;
-		wc.cbSize        = sizeof(WNDCLASSEX);
+		wc.cbSize = sizeof(WNDCLASSEX);
 
 		if (!RegisterClassEx(&wc))
 		{
@@ -45,16 +45,16 @@ namespace Tan
 		hWnd = CreateWindowEx
 		(
 			WS_EX_APPWINDOW,
-			RNDERER_NAME, 
-			RNDERER_NAME,   
+			RNDERER_NAME,
+			RNDERER_NAME,
 			WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX,
-			CW_USEDEFAULT, 
-			CW_USEDEFAULT, 
+			CW_USEDEFAULT,
+			CW_USEDEFAULT,
 			WND_WIDTH,
 			WND_HEIGHT,
-			nullptr,         
-			nullptr,      
-			hInstance,       
+			nullptr,
+			nullptr,
+			hInstance,
 			nullptr
 		);
 		if (!hWnd)
@@ -65,11 +65,11 @@ namespace Tan
 
 		// Get a window-related bitmap for rendering.
 		HDC hdc = GetDC(hWnd);
-		mHDC    = CreateCompatibleDC(hdc);
+		mHDC = CreateCompatibleDC(hdc);
 		ReleaseDC(hWnd, hdc);
-	
-		BITMAPINFO bmpInfo = 
-		{ 
+
+		BITMAPINFO bmpInfo =
+		{
 			sizeof(BITMAPINFOHEADER),
 			WND_WIDTH,
 			-WND_HEIGHT,
@@ -80,10 +80,10 @@ namespace Tan
 			0,
 			0,
 			0,
-			0 
+			0
 		};
 		LPVOID ptr = nullptr;
-		hBitMap    = CreateDIBSection(mHDC, &bmpInfo, DIB_RGB_COLORS, &ptr, nullptr, 0);
+		hBitMap = CreateDIBSection(mHDC, &bmpInfo, DIB_RGB_COLORS, &ptr, nullptr, 0);
 		if (!hBitMap)
 		{
 			MessageBox(0, "CreateDIBSection Failed.", 0, 0);
@@ -142,12 +142,12 @@ namespace Tan
 			delete mScene;
 		}
 		mScene = nullptr;
-			
+
 		if (mHDC)
 			DeleteDC(mHDC);
 		mHDC = nullptr;
 
-		if (hBitMap) 
+		if (hBitMap)
 			DeleteObject(hBitMap);
 		hBitMap = nullptr;
 
@@ -203,7 +203,7 @@ namespace Tan
 	{
 		mScene->Update();
 
-		HDC hdc= GetDC(hWnd);
+		HDC hdc = GetDC(hWnd);
 		BitBlt(hdc, 0, 0, WND_WIDTH, WND_HEIGHT, mHDC, 0, 0, SRCCOPY);
 		ReleaseDC(hWnd, hdc);
 	}
@@ -213,38 +213,39 @@ namespace Tan
 		for (int y = 0; y < WND_HEIGHT; ++y)
 			for (int x = 0; x < WND_WIDTH; ++x)
 				mFrameBuffer[y][x] = BACKGROUNDCOLOR;
-       
+
 		for (int y = 0; y < WND_HEIGHT; ++y)
 			for (int x = 0; x < WND_WIDTH; ++x)
 				mZBuffer[y][x] = BACKGROUNDCOLOR;
 	}
-	
+
 	void SoftwareRenderer::Lighting(Vertex& vertex)
 	{
-		Matrix world = mScene->GetWorldMatrix();// world -> transpose then inverse.
+		// If the render object has a non-uniform scaling, world matrix should be transpose then inverse.
+		Matrix world = mScene->GetWorldMatrix();
 		vertex.normal = RenderMath::Vector3MulMatrix(vertex.normal, world);
 
 		// Cfinal = Kambi * Mamb * Iamb + Kdif * Mdif * Idif + Kspec * Mspec * Ispec.
 		Color finalColor;
-		
+
 		float Iamb = ENVIRONMENT_AMB;
 		finalColor = (mScene->GetLightAmbient() * mScene->GetMatAmbient() * Iamb);
 
-		Vector3 N = vertex.normal;
+		Vector3 N = vertex.normal.Normalize();
 		Vector3 L = mScene->GetLightPos() - vertex.pos.ToVector3();
 		float Idif = RenderMath::Clamp(N.Dot(L), 0.0f, 1.0f);
 		finalColor += (mScene->GetLightDiffuse() * mScene->GetMatDiffuse() * Idif);
 
 		Vector3 V = mScene->GetCameraPos() - vertex.pos.ToVector3();
-		Vector3 H;
-		if (N.Dot(L) > 0) 
-			H = (L + V).Normalize();
-		float Ispec = pow(N.Dot(H), mScene->GetMatShininess());
+		float Ispec = 0.0f;
+		if (N.Dot(L) > 0.0f)
+		{
+			Vector3 H = (L + V).Normalize();
+			Ispec = pow(N.Dot(H), mScene->GetMatShininess());
+		}
 		finalColor += (mScene->GetLightSpecular() * mScene->GetMatSpecular() * Ispec);
 
-		if (finalColor.r < 0 || finalColor.g < 0 || finalColor.b < 0)
-			vertex.litColor = Color(1.0f, 1.0f, 1.0f);
-		else vertex.litColor = finalColor;
+	    vertex.litColor = finalColor;
 	}
 
 	bool SoftwareRenderer::BackfaceCulling(const Vertex& v1, const Vertex& v2, const Vertex& v3)
@@ -258,7 +259,7 @@ namespace Tan
 			Vector3 e0 = (v2.pos - v1.pos).ToVector3();
 			Vector3 e1 = (v3.pos - v1.pos).ToVector3();
 			Vector3 normal = e0.Cross(e1);
-			Vector3 view = (v1.pos - Vector3(0.0f,0.0f,0.0f)).ToVector3(); // Camera point is (0,0,0) in the view space.
+			Vector3 view = (v1.pos - Vector3(0.0f, 0.0f, 0.0f)).ToVector3(); // Camera point is (0,0,0) in the view space.
 			if (normal.Dot(view) > 0)
 				return true;
 			return false;
@@ -299,11 +300,11 @@ namespace Tan
 			// To the world space.
 			v.pos = RenderMath::Vector4MulMatrix(v.pos, mScene->GetWorldMatrix());
 			// Lighting in the world space.
-			Lighting(v);
+			if(mScene->lightingState == ON) Lighting(v);
 			// To the view space.
- 			v.pos = RenderMath::Vector4MulMatrix(v.pos, mScene->view);
+			v.pos = RenderMath::Vector4MulMatrix(v.pos, mScene->view);
 		}
-		
+
 		// Backface culling in the view space.
 		if (BackfaceCulling(vert[0], vert[1], vert[2])) return;
 
@@ -358,37 +359,37 @@ namespace Tan
 			const Vertex *top = nullptr, *bottom = nullptr, *middle = nullptr;
 			if (v1.pos.y > v2.pos.y && v2.pos.y > v3.pos.y)
 			{
-				top    = &v3;
+				top = &v3;
 				middle = &v2;
 				bottom = &v1;
 			}
 			else if (v3.pos.y > v2.pos.y && v2.pos.y > v1.pos.y)
 			{
-				top    = &v1;
+				top = &v1;
 				middle = &v2;
 				bottom = &v3;
 			}
 			else if (v2.pos.y > v1.pos.y && v1.pos.y > v3.pos.y)
 			{
-				top    = &v3;
+				top = &v3;
 				middle = &v1;
 				bottom = &v2;
 			}
 			else if (v3.pos.y > v1.pos.y && v1.pos.y > v2.pos.y)
 			{
-				top    = &v2;
+				top = &v2;
 				middle = &v1;
 				bottom = &v3;
 			}
 			else if (v1.pos.y > v3.pos.y && v3.pos.y > v2.pos.y)
 			{
-				top    = &v2;
+				top = &v2;
 				middle = &v3;
 				bottom = &v1;
 			}
 			else if (v2.pos.y > v3.pos.y && v3.pos.y > v1.pos.y)
 			{
-				top    = &v1;
+				top = &v1;
 				middle = &v3;
 				bottom = &v2;
 			}
@@ -432,7 +433,7 @@ namespace Tan
 				Vertex vl = RenderMath::Lerp(v1, v3, t);
 				vl.pos.x = xl;
 				vl.pos.y = y;
-				
+
 				Vertex vr = RenderMath::Lerp(v2, v3, t);
 				vr.pos.x = xr;
 				vr.pos.y = y;
@@ -460,7 +461,7 @@ namespace Tan
 				float dy = y - v3.pos.y;
 				float t = dy / (v2.pos.y - v3.pos.y);
 
-				Vertex vl = RenderMath::Lerp(v3, v1,t);
+				Vertex vl = RenderMath::Lerp(v3, v1, t);
 				vl.pos.x = xl;
 				vl.pos.y = y;
 
@@ -499,10 +500,14 @@ namespace Tan
 					mZBuffer[yRound][xRound] = reciprocalZ;
 
 					float w = 1.0f / reciprocalZ;
-					Color color = RenderMath::Lerp(vl.color, vr.color, lerpFactor) * w;
-					Color lit = RenderMath::Lerp(vl.litColor, vr.litColor, lerpFactor) * w;
-					//mFrameBuffer[yRound][xRound] = color.ToUINT();
-					mFrameBuffer[yRound][xRound] = (color * lit).ToUINT();
+					Color finalColor;
+
+					finalColor = RenderMath::Lerp(vl.color, vr.color, lerpFactor) * w;
+					
+					if (mScene->lightingState == ON)
+						finalColor *= RenderMath::Lerp(vl.litColor, vr.litColor, lerpFactor) * w;
+
+					mFrameBuffer[yRound][xRound] = finalColor.ToUINT();
 				}
 			}
 		}
@@ -558,7 +563,7 @@ namespace Tan
 			int mid = dx2 - dy;
 			for (int i = 0; i <= dy; ++i)
 			{
-			    DrawPixel(x1, y1, FOREGROUNDCOLOR);
+				DrawPixel(x1, y1, FOREGROUNDCOLOR);
 				if (mid >= 0)
 				{
 					mid -= dy2;
@@ -573,7 +578,7 @@ namespace Tan
 	inline void SoftwareRenderer::DrawPixel(float x, float y, UINT color)
 	{
 		if (x > 0 && x < WND_WIDTH && y > 0 && y < WND_HEIGHT)
-			mFrameBuffer[ static_cast<int>(y) ][ static_cast<int>(x) ] = color;
+			mFrameBuffer[static_cast<int>(y)][static_cast<int>(x)] = color;
 	}
 
 	LRESULT CALLBACK WndProc(HWND hwnd, UINT umessage, WPARAM wparam, LPARAM lparam)
