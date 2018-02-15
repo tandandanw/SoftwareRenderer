@@ -15,7 +15,7 @@ namespace Tan
 		renderState = RENDER_MODE;
 		lightingState = LIGHTING_MODE;
 
-		// can be initialized.
+		// Can be initialized.
 		lightSource = new Light;
 		camera = new Camera;
 

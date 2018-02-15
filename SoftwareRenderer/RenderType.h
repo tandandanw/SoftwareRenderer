@@ -4,6 +4,8 @@
 #include "Vector.h"
 #include "Color.h"
 
+#include <string>
+
 namespace Tan
 {
 	typedef enum RENDER_STATE
@@ -15,9 +17,15 @@ namespace Tan
 
 	typedef enum LIGHTING_STATE
 	{
-		ON,
-		OFF
+		ON  = 1,
+		OFF = 2
 	} LIGHTING_STATE;
+
+	typedef enum FILTER_MODE
+	{
+		POINT    = 1,
+		BILINEAR = 2
+	} FILTER_MODE;
 
 	class Vertex
 	{
@@ -27,8 +35,8 @@ namespace Tan
 		Vector2 uv;
 		Vector3 normal;
 
-		Color   litColor;  // lighting color.
-		float   rhw;    // 1 / z.
+		Color   litColor;  
+		float   rhw;       // 1 / z.
 
 	public:
 		Vertex() = default;
@@ -57,10 +65,10 @@ namespace Tan
 	class Light
 	{
 	public:
-		Vector3 pos   = { LIGHT_POS };
+		Vector3 pos   = { LIGHT_POS  };
 
-		Color   Kamb  = { LIGHT_AMB };
-		Color   Kdif  = { LIGHT_DIF };
+		Color   Kamb  = { LIGHT_AMB  };
+		Color   Kdif  = { LIGHT_DIF  };
 		Color   Kspec = { LIGHT_SPEC };
 
 	public:
@@ -69,18 +77,46 @@ namespace Tan
 		~Light() = default;
 	};
 
+	class Texture
+	{
+	public:
+		std::wstring  path;
+
+		UINT          width;
+		UINT          height;
+		Color       **pixelBuffer;
+		FILTER_MODE   filterMode;
+
+
+	public:
+		Texture();
+		Texture(std::wstring path, UINT width, UINT height);
+		Texture(const Texture& rhs) : path(rhs.path), width(rhs.width), height(rhs.height), pixelBuffer(rhs.pixelBuffer), filterMode(rhs.filterMode) {}
+		~Texture() = default;
+
+	public:
+		bool  Load();
+		Color Sample(float u, float v);
+		 
+		void  Delete();
+	};
+
 	class Material
 	{
 	public:
-		Color   Mamb      = { DEFULT_AMB };
-		Color   Mdif      = { DEFULT_DIF };
-		Color   Mspec     = { DEFULT_SPEC };
+		Color    Mamb      = { DEFULT_AMB   };
+		Color    Mdif      = { DEFULT_DIF   };
+		Color    Mspec     = { DEFULT_SPEC  };
+		float    shininess = { DEFULT_SHINE };
 
-		float   shininess = { DEFULT_SHINE };
+		Texture *texture;
 
 	public:
-		Material() = default;
-		Material(const Material& rhs) : Mamb(rhs.Mamb), Mdif(rhs.Mdif), Mspec(rhs.Mspec), shininess(rhs.shininess) {}
+		Material();
+		Material(const Material& rhs) : Mamb(rhs.Mamb), Mdif(rhs.Mdif), Mspec(rhs.Mspec), shininess(rhs.shininess), texture(rhs.texture) {}
 		~Material() = default;
+
+	public:
+		void Delete();
 	};
 }

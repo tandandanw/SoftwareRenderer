@@ -41,7 +41,7 @@ namespace Tan
 		inline void   DrawPixel(float x, float y, UINT color);
 
 	private:
-		Scene        *mScene;
+		Scene        *mScene; // It can be a list of scenes.
 
 		UINT        **mFrameBuffer;
 		float       **mZBuffer;

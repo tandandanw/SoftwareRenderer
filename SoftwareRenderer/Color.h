@@ -65,6 +65,15 @@ namespace Tan
 			g *= rhs.g;
 			b *= rhs.b;
 		}
+		Color operator/  (float n) const
+		{
+			return Color
+			(
+				r / n,
+				g / n,
+				b / n
+			);
+		}
 
 	public:
 		UINT ToUINT()

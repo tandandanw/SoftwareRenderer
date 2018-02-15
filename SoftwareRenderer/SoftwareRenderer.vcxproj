@@ -129,6 +129,7 @@
     <ClCompile Include="MainEntrace.cpp" />
     <ClCompile Include="RenderMath.cpp" />
     <ClCompile Include="RenderObject.cpp" />
+    <ClCompile Include="RenderType.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SoftwareRenderer.cpp" />
   </ItemGroup>

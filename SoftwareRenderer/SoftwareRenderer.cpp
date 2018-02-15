@@ -300,7 +300,7 @@ namespace Tan
 			// To the world space.
 			v.pos = RenderMath::Vector4MulMatrix(v.pos, mScene->GetWorldMatrix());
 			// Lighting in the world space.
-			if(mScene->lightingState == ON) Lighting(v);
+			if(mScene->lightingState & ON) Lighting(v);
 			// To the view space.
 			v.pos = RenderMath::Vector4MulMatrix(v.pos, mScene->view);
 		}
@@ -504,7 +504,7 @@ namespace Tan
 
 					finalColor = RenderMath::Lerp(vl.color, vr.color, lerpFactor) * w;
 					
-					if (mScene->lightingState == ON)
+					if (mScene->lightingState & ON)
 						finalColor *= RenderMath::Lerp(vl.litColor, vr.litColor, lerpFactor) * w;
 
 					mFrameBuffer[yRound][xRound] = finalColor.ToUINT();

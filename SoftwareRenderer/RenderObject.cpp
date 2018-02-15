@@ -32,7 +32,10 @@ namespace Tan
 		indices = nullptr;
 
 		if (map)
+		{
+			map->Delete();
 			delete map;
+		}
 		map = nullptr;
 	}
 
