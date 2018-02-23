@@ -138,7 +138,7 @@ namespace Tan
 		}
 		void	 operator=  (const Vector3& rhs)
 		{
-			if (this == &rhs) 
+			if (this == &rhs)
 				return;
 			x = rhs.x;
 			y = rhs.y;
@@ -236,7 +236,7 @@ namespace Tan
 		}
 		void     operator=  (const Vector4& rhs)
 		{
-			if (this == &rhs) 
+			if (this == &rhs)
 				return;
 			x = rhs.x;
 			y = rhs.y;

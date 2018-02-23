@@ -8,7 +8,7 @@ namespace Tan
 	class Scene
 	{
 	public:
-		RenderObject  *renderObject; // It can be a list of render objects.
+		RenderObject * renderObject; // It can be a list of render objects.
 		RENDER_STATE   renderState;
 
 		LIGHTING_STATE lightingState;
@@ -65,7 +65,7 @@ namespace Tan
 			return renderObject->indicesCount;
 		};
 
-		Matrix   GetWorldMatrix() const 
+		Matrix   GetWorldMatrix() const
 		{
 			return renderObject->world;
 		}

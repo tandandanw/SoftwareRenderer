@@ -4,14 +4,14 @@ namespace Tan
 {
 	SoftwareRenderer::SoftwareRenderer()
 	{
-		hWnd         = nullptr;
-		hInstance    = nullptr;
-		mHDC         = nullptr;
-		hBitMap      = nullptr;
+		hWnd = nullptr;
+		hInstance = nullptr;
+		mHDC = nullptr;
+		hBitMap = nullptr;
 
 		mFrameBuffer = nullptr;
-		mZBuffer     = nullptr;
-		mScene       = nullptr;
+		mZBuffer = nullptr;
+		mScene = nullptr;
 	}
 
 	bool SoftwareRenderer::Initialize()
@@ -245,7 +245,7 @@ namespace Tan
 		}
 		finalColor += (mScene->GetLightSpecular() * mScene->GetMatSpecular() * Ispec);
 
-	    vertex.litColor = finalColor;
+		vertex.litColor = finalColor;
 	}
 
 	bool SoftwareRenderer::BackfaceCulling(const Vertex& v1, const Vertex& v2, const Vertex& v3)
@@ -300,7 +300,7 @@ namespace Tan
 			// To the world space.
 			v.pos = RenderMath::Vector4MulMatrix(v.pos, mScene->GetWorldMatrix());
 			// Lighting in the world space.
-			if(mScene->lightingState & ON) Lighting(v);
+			if (mScene->lightingState & ON) Lighting(v);
 			// To the view space.
 			v.pos = RenderMath::Vector4MulMatrix(v.pos, mScene->view);
 		}
@@ -494,7 +494,7 @@ namespace Tan
 					lerpFactor = (x - vl.pos.x) / dx;
 
 				float reciprocalZ = RenderMath::Lerp(vl.rhw, vr.rhw, lerpFactor);
-				if (mZBuffer[yRound][xRound] < reciprocalZ || mZBuffer[yRound][xRound] - reciprocalZ < FLT_MIN) // Depth Test.(must be mZBuffer - rZ)
+				if (mZBuffer[yRound][xRound] < reciprocalZ || mZBuffer[yRound][xRound] - reciprocalZ < FLT_MIN) // Depth Test. (mZBuffer - rZ or abs())
 				{
 					// Update z-buffer(actually, it contains 1/z).
 					mZBuffer[yRound][xRound] = reciprocalZ;
@@ -502,8 +502,14 @@ namespace Tan
 					float w = 1.0f / reciprocalZ;
 					Color finalColor;
 
-					finalColor = RenderMath::Lerp(vl.color, vr.color, lerpFactor) * w;
-					
+					if (mScene->renderState & COLOR)
+						finalColor = RenderMath::Lerp(vl.color, vr.color, lerpFactor) * w;
+					else
+					{
+						Vector2 uv = RenderMath::Lerp(vl.uv, vr.uv, lerpFactor) * w;
+						finalColor = mScene->GetTexturePixel(uv);
+					}
+
 					if (mScene->lightingState & ON)
 						finalColor *= RenderMath::Lerp(vl.litColor, vr.litColor, lerpFactor) * w;
 

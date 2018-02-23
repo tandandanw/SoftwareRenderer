@@ -29,11 +29,11 @@
 #define DEFULT_SPEC		     1.0f, 1.0f, 1.0f
 #define DEFULT_SHINE		 99.0f
 
-#define TEXTURE_PATH         0
+#define TEXTURE_PATH         L"texture.bmp"
 #define TEXTURE_WIDTH        600
-#define TEXTURE_HEIGHT       600
+#define TEXTURE_HEIGHT       569
 
-#define DEFULT_FILTER        BILINEAR
+#define DEFULT_FILTER        POINT
 
 typedef  unsigned int        UINT;
 

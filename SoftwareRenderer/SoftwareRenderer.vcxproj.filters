@@ -79,5 +79,8 @@
     <Image Include="RenderIcon.ico">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="texture.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

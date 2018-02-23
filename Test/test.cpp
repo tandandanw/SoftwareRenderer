@@ -2,7 +2,7 @@
 
 using namespace Tan;
 
-TEST(MathTestCases, Vector2Length) 
+TEST(MathTestCases, Vector2Length)
 {
 	Vector2 v(1, 1);
 	float Length = v.Length();
@@ -15,7 +15,7 @@ TEST(MathTestCases, Vector2Dot)
 	Vector2 v2(5.0f, 3.0f);
 	float result = v1.Dot(v2);
 	EXPECT_TRUE(result - 15.5f < FLT_MIN);
-	
+
 }
 TEST(MathTestCases, Vector2Normalize)
 {

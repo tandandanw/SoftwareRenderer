@@ -116,7 +116,7 @@ namespace Tan
 	{
 		Matrix ret;
 		ret.SetZero();
-		float fax   = 1.0f / static_cast<float>(tan(fovy * 0.5f));
+		float fax = 1.0f / static_cast<float>(tan(fovy * 0.5f));
 		ret.m[0][0] = static_cast<float>(fax / aspect);
 		ret.m[1][1] = static_cast<float>(fax);
 		ret.m[2][2] = zf / (zf - zn);

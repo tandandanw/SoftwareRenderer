@@ -11,19 +11,19 @@ namespace Tan
 	typedef enum RENDER_STATE
 	{
 		WIREFRAME = 1,
-		COLOR     = 2,
-		TEXTURE   = 4
+		COLOR = 2,
+		TEXTURE = 4
 	} RENDER_STATE;
 
 	typedef enum LIGHTING_STATE
 	{
-		ON  = 1,
+		ON = 1,
 		OFF = 2
 	} LIGHTING_STATE;
 
 	typedef enum FILTER_MODE
 	{
-		POINT    = 1,
+		POINT = 1,
 		BILINEAR = 2
 	} FILTER_MODE;
 
@@ -35,7 +35,7 @@ namespace Tan
 		Vector2 uv;
 		Vector3 normal;
 
-		Color   litColor;  
+		Color   litColor;
 		float   rhw;       // 1 / z.
 
 	public:
@@ -65,10 +65,10 @@ namespace Tan
 	class Light
 	{
 	public:
-		Vector3 pos   = { LIGHT_POS  };
+		Vector3 pos   = { LIGHT_POS };
 
-		Color   Kamb  = { LIGHT_AMB  };
-		Color   Kdif  = { LIGHT_DIF  };
+		Color   Kamb  = { LIGHT_AMB };
+		Color   Kdif  = { LIGHT_DIF };
 		Color   Kspec = { LIGHT_SPEC };
 
 	public:
@@ -95,18 +95,18 @@ namespace Tan
 		~Texture() = default;
 
 	public:
-		bool  Load();
+		void  Load();
 		Color Sample(float u, float v);
-		 
+
 		void  Delete();
 	};
 
 	class Material
 	{
 	public:
-		Color    Mamb      = { DEFULT_AMB   };
-		Color    Mdif      = { DEFULT_DIF   };
-		Color    Mspec     = { DEFULT_SPEC  };
+		Color    Mamb      = { DEFULT_AMB };
+		Color    Mdif      = { DEFULT_DIF };
+		Color    Mspec     = { DEFULT_SPEC };
 		float    shininess = { DEFULT_SHINE };
 
 		Texture *texture;

@@ -5,8 +5,9 @@ namespace Tan
 	Scene::Scene()
 	{
 		renderObject = nullptr;
-		lightSource  = nullptr;
-		camera       = nullptr;
+		lightSource = nullptr;
+		camera = nullptr;
+
 	}
 
 	void Scene::Initialize()
