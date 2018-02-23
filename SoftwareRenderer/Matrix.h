@@ -99,10 +99,6 @@ namespace Tan
 		}
 
 	public:
-		Matrix  GetInverse() const
-		{
-
-		}
 		Matrix  GetTranspose() const
 		{
 			Matrix ret;
