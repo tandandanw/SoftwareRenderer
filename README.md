@@ -43,18 +43,18 @@ Software renderer shows the automatic process of generating a image from a 3D mo
 
 ### wireframe mode
 
-  ![wireframe](https://raw.githubusercontent.com/PasserbyTan/PasserbyTan.github.io/master/assets/images/posts/wireframe.png)
+  ![wireframe](https://github.com/PasserbyTan/PasserbyTan.github.io/blob/master/assets/img/pexels/wireframe.png)
 
 ### vertex color mode
 
-  ![color](https://raw.githubusercontent.com/PasserbyTan/PasserbyTan.github.io/master/assets/images/posts/color.png)
+  ![color](https://github.com/PasserbyTan/PasserbyTan.github.io/blob/master/assets/img/pexels/color.png)
 
 ### texture mode
 
-  ![texture](https://raw.githubusercontent.com/PasserbyTan/PasserbyTan.github.io/master/assets/images/posts/texture.png)
+  ![texture](https://github.com/PasserbyTan/PasserbyTan.github.io/blob/master/assets/img/pexels/texture.png)
 
 ### lighting on
 
-  ![lighting](https://raw.githubusercontent.com/PasserbyTan/PasserbyTan.github.io/master/assets/images/posts/lighting.png)
+  ![lighting](https://github.com/PasserbyTan/PasserbyTan.github.io/blob/master/assets/img/pexels/lighting.png)
   ​
 
