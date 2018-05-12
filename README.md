@@ -34,8 +34,9 @@ Software renderer shows the automatic process of generating a image from a 3D mo
   
 ## Others
 
-  - Details of this project :  [blog - software renderer](https://passerbytan.github.io/blog/software-renderer/) (chinese) 
+  - Experience of this project :  [blog - software renderer](https://passerbytan.github.io/blog/software-renderer/) (chinese) 
 :kissing_heart:
+  - Implementation details and  explanation of this project (Microsoft PPTs) : ImplementationDetails.zip (SoftwareRenderer/ImplementationDetails.zip)
 
 - - -
 
