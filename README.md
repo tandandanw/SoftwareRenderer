@@ -28,34 +28,34 @@ Software renderer shows the automatic process of generating a image from a 3D mo
 
 ## Compile and Run
 
-  - Only for Windows users :
+  - Only for **Windows** users (cause using GDI):
 
-  Open the project solution ( SoftwareRenderer.sln ) and compile for Debug / Release mode. It' s as easy as it can get.
-  
+  Open the project solution (SoftwareRenderer.sln) then run it. It' s as easy as it can get.
+
 ## Others
 
-  - Experience of this project :  [blog - software renderer](https://passerbytan.github.io/blog/software-renderer/) (chinese) 
-:kissing_heart:
-  - Implementation details and  explanation of this project (Microsoft PPTs) : ImplementationDetails.zip (SoftwareRenderer/ImplementationDetails.zip)
+  - Blog
 
-- - -
+  (SoftwareRenderer/2018-02-17-software-renderer)
+
+  - Explanation of implementation
+
+  (SoftwareRenderer/ImplementationDetails.zip)
 
 ## Screenshots
 
-### wireframe mode
+### Wireframe mode
 
-  ![wireframe](https://github.com/PasserbyTan/PasserbyTan.github.io/blob/master/assets/img/pexels/wireframe.png)
+![wireframe.png](https://i.loli.net/2020/02/27/SpiWO5uVj3gA8cr.png)
 
-### vertex color mode
+### Vertex color mode
 
-  ![color](https://github.com/PasserbyTan/PasserbyTan.github.io/blob/master/assets/img/pexels/color.png)
+![color.png](https://i.loli.net/2020/02/27/kVhxnTv3sFtN2Rp.png)
 
-### texture mode
+### Texture mode
 
-  ![texture](https://github.com/PasserbyTan/PasserbyTan.github.io/blob/master/assets/img/pexels/texture.png)
+![texture.png](https://i.loli.net/2020/02/27/zd7IeojB9kMpOPL.png)
 
-### lighting on
+### Lighting on
 
-  ![lighting](https://github.com/PasserbyTan/PasserbyTan.github.io/blob/master/assets/img/pexels/lighting.png)
-  ​
-
+![lighting.png](https://i.loli.net/2020/02/27/BNI1dcmPzjGLveY.png)
